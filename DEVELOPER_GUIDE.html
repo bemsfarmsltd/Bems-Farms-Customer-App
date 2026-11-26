@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DEVELOPER_GUIDE.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="beemfarms-developer-guide">BeemFarms Developer Guide</h1>
+<p>This document provides a comprehensive overview of the BeemFarms Flutter application. It serves as a guide for any developer who needs to understand the project's architecture, maintain the codebase, or add new features.</p>
+<p><strong>Note: This document should be updated as the project evolves.</strong></p>
+<hr>
+<h2 id="1-project-overview">1. Project Overview</h2>
+<p><strong>BeemFarms</strong> is an e-commerce mobile application for farm produce and agricultural products. It enables users to browse fresh products, deals, and recipes, add items to their cart, and complete orders through a secure checkout process.</p>
+<p><strong>Technology Stack:</strong></p>
+<ul>
+<li><strong>Framework:</strong> Flutter (Dart)</li>
+<li><strong>State Management:</strong> Riverpod (<code>flutter_riverpod</code>)</li>
+<li><strong>Networking:</strong> HTTP (<code>http</code>) targeting a REST API hosted at <code>https://bemsfarms-api.onrender.com/api</code></li>
+<li><strong>Local Storage:</strong> <code>flutter_secure_storage</code> (for JWTs) and <code>shared_preferences</code> (for app settings/onboarding state).</li>
+<li><strong>Design System:</strong> Material Design with customized <code>AppTheme</code>.</li>
+</ul>
+<hr>
+<h2 id="2-project-structure--architecture">2. Project Structure &amp; Architecture</h2>
+<p>The app uses a <strong>Feature-Driven Architecture</strong> (sometimes referred to as Clean Architecture by feature). This means that all code related to a specific feature (like authentication or cart) is encapsulated in its own folder.</p>
+<pre class="hljs"><code><div>lib/
+├── core/             # App-wide constants, theming, and routing logic
+├── features/         # Individual app features (Auth, Cart, Home, etc.)
+├── shared/           # Reusable UI widgets and common models
+└── main.dart         # App entry point &amp; initialization
+</div></code></pre>
+<h3 id="21-core">2.1 <code>core/</code></h3>
+<p>Contains the structural configurations of the app:</p>
+<ul>
+<li><strong><code>theme/</code></strong>: Configures the Material UI theme, standard colors, and font styles.</li>
+<li><strong><code>constants/</code></strong>: Holds string literals, API base URLs, or global keys.</li>
+<li><strong><code>routing/</code></strong>: Manages screen navigation (if centralized).</li>
+</ul>
+<h3 id="22-features">2.2 <code>features/</code></h3>
+<p>This is where the business logic and user interface live. The project is split into the following features:</p>
+<ul>
+<li><strong><code>auth/</code></strong>: Login, registration, token storage, and the splash screen.</li>
+<li><strong><code>cart/</code></strong>: Managing the user's shopping cart state.</li>
+<li><strong><code>checkout/</code></strong>: Processing cart items into an order, entering shipping details.</li>
+<li><strong><code>home/</code></strong>: The main dashboard the user sees after logging in.</li>
+<li><strong><code>onboarding/</code></strong>: Welcome screens for first-time users.</li>
+<li><strong><code>orders/</code></strong>: Viewing past and current orders.</li>
+<li><strong><code>product/</code></strong>: Fetching and displaying individual products.</li>
+<li><strong><code>profile/</code></strong>: Managing user details and settings.</li>
+<li><strong><code>recipes/</code></strong>: Agricultural/food recipes for users.</li>
+<li><strong><code>shop/</code></strong>: Browsing categories and searching for items.</li>
+</ul>
+<p><strong>Inside each feature folder</strong>, you will typically find:</p>
+<ul>
+<li><strong><code>data/</code></strong>: Repositories for fetching data (e.g., <code>ProductRepository</code>), making HTTP requests, and communicating with the API.</li>
+<li><strong><code>models/</code></strong>: Dart classes that map JSON responses to objects (e.g., <code>ProductModel</code>).</li>
+<li><strong><code>presentation/</code></strong>:
+<ul>
+<li><strong><code>pages/</code></strong> or <strong><code>screens/</code></strong>: The main UI files (e.g., <code>deals_page.dart</code>).</li>
+<li><strong><code>widgets/</code></strong>: Smaller UI components specific to the feature.</li>
+<li><strong><code>providers/</code></strong>: Riverpod providers that manage the state for this feature.</li>
+</ul>
+</li>
+</ul>
+<h3 id="23-shared">2.3 <code>shared/</code></h3>
+<p>Contains code that is used across multiple features to avoid duplication.</p>
+<ul>
+<li><strong><code>widgets/</code></strong>: Common buttons, text fields, loaders, and error dialogs.</li>
+<li><strong><code>models/</code></strong>: Data classes that multiple features need to reference.</li>
+</ul>
+<hr>
+<h2 id="3-state-management-riverpod">3. State Management (Riverpod)</h2>
+<p>The app relies heavily on <strong>Riverpod</strong> for state management.</p>
+<ul>
+<li>Global state such as user authentication status or the current shopping cart is managed via Providers (e.g., <code>StateNotifierProvider</code> or <code>FutureProvider</code>).</li>
+<li><strong>How to read state:</strong> In your UI, extend <code>ConsumerWidget</code> instead of <code>StatelessWidget</code>, and use <code>ref.watch(providerName)</code> to listen for changes.</li>
+<li><strong>How to modify state:</strong> Use <code>ref.read(providerName.notifier).methodName()</code> to trigger updates without listening.</li>
+</ul>
+<hr>
+<h2 id="4-networking--api-integration">4. Networking &amp; API Integration</h2>
+<p>All external API communication is handled through Repository classes located in the <code>data/repositories</code> folder of their respective features.</p>
+<ul>
+<li><strong>Base URL:</strong> <code>https://bemsfarms-api.onrender.com/api</code></li>
+<li><strong>Authentication:</strong> Most endpoints require a JWT token. This is handled by retrieving the token via <code>TokenStorage</code> (using <code>flutter_secure_storage</code>) and attaching it to the <code>Authorization: Bearer &lt;token&gt;</code> header.</li>
+<li><strong>Error Handling:</strong> Repositories intercept HTTP status codes. A <code>401 Unauthorized</code> will trigger a session expiration flow, while <code>4xx</code> and <code>5xx</code> throw standard exceptions that the UI should catch and display.</li>
+</ul>
+<p>Example Repository structure:</p>
+<pre class="hljs"><code><div>Future&lt;Product&gt; getProductById(<span class="hljs-built_in">String</span> id) <span class="hljs-keyword">async</span> {
+  <span class="hljs-keyword">final</span> token = <span class="hljs-keyword">await</span> _tokenStorage.getToken();
+  <span class="hljs-keyword">final</span> response = <span class="hljs-keyword">await</span> _client.<span class="hljs-keyword">get</span>(
+    <span class="hljs-built_in">Uri</span>.parse(<span class="hljs-string">&#x27;<span class="hljs-subst">$_baseUrl</span>/products/<span class="hljs-subst">$id</span>&#x27;</span>),
+    headers: { <span class="hljs-string">&#x27;Authorization&#x27;</span>: <span class="hljs-string">&#x27;Bearer <span class="hljs-subst">$token</span>&#x27;</span> },
+  );
+  <span class="hljs-comment">// Parse response and handle errors</span>
+}
+</div></code></pre>
+<hr>
+<h2 id="5-adding-a-new-feature">5. Adding a New Feature</h2>
+<p>When the company needs a new feature, follow this checklist to maintain the architecture:</p>
+<ol>
+<li>Create a new folder under <code>lib/features/</code> (e.g., <code>lib/features/payments/</code>).</li>
+<li>Inside it, create <code>data/</code>, <code>models/</code>, and <code>presentation/</code> folders.</li>
+<li>Build the UI in <code>presentation/pages/</code>.</li>
+<li>Create the necessary <code>StateNotifier</code> or Riverpod providers to manage the feature's logic.</li>
+<li>Create a repository in <code>data/</code> if the feature needs to talk to the backend.</li>
+</ol>
+<hr>
+<h2 id="6-development--deployment">6. Development &amp; Deployment</h2>
+<h3 id="running-the-app">Running the App</h3>
+<ol>
+<li>Ensure you have Flutter installed and an emulator running (or a physical device connected).</li>
+<li>Fetch dependencies: <code>flutter pub get</code></li>
+<li>Run the app: <code>flutter run</code></li>
+</ol>
+<h3 id="environment-setup">Environment Setup</h3>
+<ul>
+<li>The app requires standard Flutter SDK <code>^3.0.0</code>.</li>
+<li>No complex environment files (<code>.env</code>) are currently tracked, as the API URL is hardcoded in the repositories. If you move to staging/production servers, consider adding <code>flutter_dotenv</code>.</li>
+</ul>
+<hr>
+<p><em>End of Developer Guide</em></p>
+
+</body>
+</html>
